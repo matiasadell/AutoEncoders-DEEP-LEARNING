@@ -1,10 +1,4 @@
 # Auto Encoders
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Jan 10 09:51:46 2020
-
-@author: juangabriel
-"""
 
 # Importar las librerías
 import numpy as np
@@ -83,10 +77,9 @@ for epoch in range(1, nb_epoch+1):
             target.require_grad = False
             output[target == 0] = 0
             loss = criterion(output, target)
-            # la media no es sobre todas las películas, sino sobre las que realmente ha valorado
             mean_corrector = nb_movies/float(torch.sum(target.data > 0)+1e-10) 
             loss.backward()
-            train_loss += np.sqrt(loss.data*mean_corrector) ## sum(errors) / n_pelis_valoradas
+            train_loss += np.sqrt(loss.data*mean_corrector) 
             s += 1.
             optimizer.step()
     print("Epoch: "+str(epoch)+", Loss: "+str(train_loss/s))
@@ -102,9 +95,8 @@ for id_user in range(nb_users):
         target.require_grad = False
         output[target == 0] = 0
         loss = criterion(output, target)
-        # la media no es sobre todas las películas, sino sobre las que realmente ha valorado
         mean_corrector = nb_movies/float(torch.sum(target.data > 0)+1e-10) 
-        test_loss += np.sqrt(loss.data*mean_corrector) ## sum(errors) / n_pelis_valoradas
+        test_loss += np.sqrt(loss.data*mean_corrector) 
         s += 1.
 print("Test Loss: "+str(test_loss/s))
 
